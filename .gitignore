@@ -1,5 +1,9 @@
+# macOS 应用
 .build/
 build/
 .swiftpm/
-.DS_Store
 *.xcodeproj
+.DS_Store
+
+# GNOME Shell 扩展
+gnome/dist/

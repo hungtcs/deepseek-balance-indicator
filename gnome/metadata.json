@@ -1,0 +1,13 @@
+{
+  "uuid": "deepseek-balance-indicator@hungtcs.dev",
+  "name": "DeepSeek 余额指示器",
+  "description": "在顶栏显示 DeepSeek 账户余额，可展开查看赠送/充值明细。余额来自 api.deepseek.com，API Key 只保存在本机。",
+  "shell-version": [
+    "48",
+    "49",
+    "50"
+  ],
+  "url": "https://github.com/hungtcs/deepseek-balance-indicator",
+  "settings-schema": "org.gnome.shell.extensions.deepseek-balance-indicator",
+  "version-name": "1.0.0"
+}

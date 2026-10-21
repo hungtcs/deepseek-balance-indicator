@@ -1,0 +1,10 @@
+/* 金额用等宽数字，刷新时不会因为数字宽度变化让顶栏左右跳。 */
+.deepseek-balance-label {
+    font-feature-settings: "tnum";
+    margin-left: 2px;
+}
+
+/* 失败原因用红色写在菜单里；顶栏仍然显示上一次成功的余额。 */
+.deepseek-menu-error {
+    color: #ff7b72;
+}
