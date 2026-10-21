@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.deepseek-balance-indicator"
+          path="/org/gnome/shell/extensions/deepseek-balance-indicator/">
+    <key name="api-key" type="s">
+      <default>''</default>
+      <summary>DeepSeek API Key</summary>
+      <description>在 https://platform.deepseek.com/api_keys 创建。只保存在本机的 dconf 数据库里。</description>
+    </key>
+    <key name="poll-interval" type="i">
+      <default>30</default>
+      <range min="5" max="3600"/>
+      <summary>轮询间隔（秒）</summary>
+      <description>两次余额请求之间的间隔，最小 5 秒，最大 3600 秒。</description>
+    </key>
+  </schema>
+</schemalist>

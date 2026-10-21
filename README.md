@@ -1,44 +1,59 @@
 # DeepSeek 余额指示器
 
-macOS 菜单栏应用，实时显示 DeepSeek 账户余额。Swift 原生（AppKit + SwiftUI），无第三方依赖。
+在桌面顶栏 / 菜单栏实时显示 DeepSeek 账户余额。同一份界面行为在两个平台上
+各有独立实现，互不依赖：
 
-![菜单栏](docs/statusbar.png)
+| 平台                | 形态                                   | 目录                        | 文档                              |
+| ------------------- | -------------------------------------- | --------------------------- | --------------------------------- |
+| macOS               | 菜单栏应用（Swift · AppKit + SwiftUI） | [`macos/`](macos/README.md) | [macOS 版说明](macos/README.md)   |
+| Linux · GNOME Shell | 顶栏扩展（GJS · ESM）                  | [`gnome/`](gnome/README.md) | [GNOME 扩展说明](gnome/README.md) |
 
-## 构建运行
+两者都可以单独构建、安装和卸载，没有共享的运行时代码；共同的只有接口约定：
+
+- 余额来自 `GET https://api.deepseek.com/user/balance`
+- 请求带 `Authorization: Bearer <API Key>`，超时 15 秒
+- 默认每 30 秒刷新一次
+- 请求失败时保留上一次成功的余额，在菜单 / 下拉里写明原因
+- API Key 只保存在本机（macOS `UserDefaults`、GNOME dconf），不经过第三方
+
+## 快速开始
+
+macOS：
 
 ```bash
+cd macos
 ./scripts/build-app.sh
 open build/DeepSeekBalanceIndicator.app
 ```
 
-应用只驻留菜单栏（`LSUIElement`，无 Dock 图标、无主窗口），首次启动会自动弹出设置窗口。
-
-## 设置
-
-![设置界面](docs/settings.png)
-
-- **API Key** — 在 [platform.deepseek.com/api_keys](https://platform.deepseek.com/api_keys) 创建，输入框右侧的眼睛图标切换明文 / 隐藏
-- **轮询间隔** — 默认 30 秒，最小 5 秒
-
-「测试并保存」先保存两项设置，再用刚填的 Key 请求一次接口，把结果显示在下方。
-
-菜单：余额明细、立即刷新 ⌘R、设置 ⌘,、关于、退出 ⌘Q。未配置 Key 时只有「点击配置 API Key…」一项。
-
-## 说明
-
-- 余额来自 `https://api.deepseek.com/user/balance`，API Key 只保存在本机 `UserDefaults`，不会上传到任何地方。
-- 请求失败时菜单栏显示 `--`，菜单里用红色写明原因（401、网络错误等），并保留上一次成功的余额。
-- 菜单栏图标是模板图标，只取 alpha 通道，跟随系统自动变白 / 变黑；图标素材来自 DeepSeek，版权归 DeepSeek 所有。
-- 退出请用菜单里的「退出」，应用没有 Dock 图标。
-
-## 开发
+Linux（Fedora / GNOME Shell 48+）：
 
 ```bash
-./scripts/make-icon.sh            # 由 icon.svg 生成菜单栏图标与应用图标
-./scripts/make-screenshots.sh     # 重新生成 docs/ 里的截图
-
-# 不需要显示器即可验证打包结果与网络链路
-build/DeepSeekBalanceIndicator.app/Contents/MacOS/DeepSeekBalanceIndicator --self-test
+cd gnome
+make install
+gnome-extensions enable deepseek-balance-indicator@hungtcs.dev
+# 若顶栏没有立刻出现，注销重新登录后再执行一次 enable
 ```
 
-`--self-test` 会启动状态栏、跑一次请求、打开两个窗口并打印实际渲染结果后退出。`--endpoint <url>` 可把请求指向本地桩服务，`--capture <dir>` 可把界面渲染成 PNG。
+详细说明、设置项和测试方式见各平台目录下的 README。
+
+## 仓库结构
+
+```
+.
+├── macos/        # Swift 菜单栏应用
+├── gnome/        # GNOME Shell 扩展（独立工程）
+├── LICENSE       # MIT
+└── README.md
+```
+
+## 测试
+
+- macOS：`macos/` 下的 `--self-test` / `--capture`，见 [macOS 版说明](macos/README.md)
+- GNOME：`cd gnome && make test`（单元测试）、`make test-shell`
+  （`gnome-shell-test-tool` 无头集成测试），见 [GNOME 扩展说明](gnome/README.md)
+
+## 授权
+
+代码以 [MIT License](LICENSE) 授权。DeepSeek 鲸鱼图标素材来自 DeepSeek，
+版权归 DeepSeek 所有。
