@@ -119,8 +119,10 @@ export async function run() {
     check(Boolean(endpoint), '测试端点由 DEEPSEEK_BALANCE_ENDPOINT 指定');
     check(endpoint.includes(`:${PORT}/`), '测试端点指向桩服务端口');
 
+    // GNOME Shell 51 起扩展加载是异步的：自动化脚本可能先于
+    // ExtensionManager 完成加载而启动，所以这里要等状态对象出现。
+    await waitFor(() => Boolean(Extension.lookupByUUID(UUID)), '扩展已加载');
     const extension = Extension.lookupByUUID(UUID);
-    check(Boolean(extension), '扩展已加载');
 
     // ---- 未配置 ----
     let diagnostics = extension.getDiagnostics();

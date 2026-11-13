@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 启动一个隔离的嵌套 GNOME Shell 开发会话（GNOME 50 的 --devkit）。
+# 启动一个隔离的嵌套 GNOME Shell 开发会话（GNOME 49+ 的 --devkit）。
 #
 # 会在当前桌面上开一个小窗口，里面是独立的 Shell。关闭窗口即退出，
 # 不会改动当前登录会话的扩展和设置。
@@ -7,7 +7,7 @@
 #   ./dev-session.sh              # 本地桩服务，显示 ¥110.00
 #   USE_STUB=0 ./dev-session.sh   # 不启桩服务，在设置里填真实 API Key
 #
-# 依赖：mutter-devkit（GNOME 49+ 靠它把嵌套 Shell 显示成窗口）。
+# 依赖：mutter-devkit（GNOME 49+ 靠它把嵌套 Shell 显示成窗口，51 上仍可用）。
 set -euo pipefail
 
 cd "$(dirname "$0")"

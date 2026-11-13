@@ -22,9 +22,9 @@ pack:
 		--extra-source=stylesheet.css \
 		--schema=$(SCHEMA) \
 		.
-	# GNOME Shell 50.5 的 gnome-extensions install 遇到 zip 里的目录条目会
-	# 报 “Can’t recursively copy directory”。pack 生成的 zip 带目录条目，
-	# 删掉后安装正常；schema 由安装器解压后自动编译。
+	# GNOME Shell 50.5 及更早版本的 gnome-extensions install 遇到 zip 里的
+	# 目录条目会报 “Can’t recursively copy directory”。删掉后安装正常；
+	# schema 由安装器解压后自动编译。51 已修复，这里保留仅为兼容 48–50。
 	zip -qd $(ZIP) '*/'
 	@echo "==> $(ZIP) (v$(VERSION))"
 

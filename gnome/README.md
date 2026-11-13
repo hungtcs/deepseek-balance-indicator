@@ -14,7 +14,7 @@
 
 ## 系统要求
 
-- GNOME Shell 48 / 49 / 50（在 Fedora 44、GNOME Shell 50.5 上测试）
+- GNOME Shell 48 / 49 / 50 / 51（在 Fedora 45、GNOME Shell 51.1 上测试）
 - 运行时依赖由 GNOME Shell 自带：GJS、libsoup 3、libadwaita
 - 构建/安装需要 `gnome-extensions` 和 `zip`
 - 集成测试额外需要 `gnome-shell-test-tool`（随 `gnome-shell` 安装）和
@@ -33,11 +33,11 @@ make install
 gnome-extensions enable deepseek-balance-indicator@hungtcs.dev
 ```
 
-GNOME 50 的 Wayland 会话对已加载扩展有缓存，**如果顶栏没有立刻出现，
+GNOME 51 的 Wayland 会话对已加载扩展有缓存，**如果顶栏没有立刻出现，
 注销并重新登录**，登录后再执行一次上面的 `enable`。第一次登录后可以在
 「扩展」应用里确认它处于开启状态。
 
-更新代码后也要重新 `make install`，并注销重登 —— GNOME 50 没有可用的
+更新代码后也要重新 `make install`，并注销重登 —— GNOME 51 没有可用的
 扩展热重载入口。自动化验证请用下面的测试工具，不必反复登录。
 
 卸载：
@@ -127,7 +127,7 @@ USE_STUB=0 ./dev-session.sh
 `XDG_CONFIG_HOME` / `XDG_DATA_HOME` 和私有 D-Bus，不会改动你当前登录会话
 的扩展与设置；关掉窗口即退出，桩服务一并清理。
 
-修改代码后需要重新运行 `make dev-session`（GNOME 50 没有扩展热重载），
+修改代码后需要重新运行 `make dev-session`（GNOME 51 没有扩展热重载），
 脚本会重新构建 `dist/dev/` 并启动新的嵌套会话。
 
 ## 开发
@@ -184,10 +184,11 @@ DEEPSEEK_BALANCE_ENDPOINT=http://127.0.0.1:8765/user/balance \
 
 ### 打包注意
 
-GNOME Shell 50.5 自带的 `gnome-extensions install` 遇到 zip 中的目录条目会报
-`Can’t recursively copy directory`。`make pack` 在 `gnome-extensions pack`
-之后用 `zip -qd ... '*/'` 删掉目录条目，安装器随后会自行编译
-`schemas/gschemas.compiled`。如果上游修复了这个问题，这一步可以去掉。
+GNOME Shell 50.5 及更早版本的 `gnome-extensions install` 遇到 zip 中的目录
+条目会报 `Can’t recursively copy directory`。`make pack` 在
+`gnome-extensions pack` 之后用 `zip -qd ... '*/'` 删掉目录条目，安装器随后
+会自行编译 `schemas/gschemas.compiled`。GNOME Shell 51 已经修复了这个
+问题，这一步保留只是为了兼容 48–50。
 
 ## 说明
 
